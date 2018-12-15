@@ -65,7 +65,10 @@ server.listen(port, function () {
 io.on('connection', function (socket) {
   console.log('a user connected', socket.id)
   // create a new player and add it to our players object
-  players[socket.id] = {
+ 
+
+  players = { 
+[socket.id]:{
     playerId: socket.id,
     x: 100,
     y: 450,
@@ -74,7 +77,10 @@ io.on('connection', function (socket) {
       x: 100,
       y: 450,
     }
+  },
+  ...players
   }
+  console.log(players)
 
   // send the players object to the new player
   socket.emit('currentPlayers', players)
@@ -91,6 +97,7 @@ io.on('connection', function (socket) {
 
   // when a player moves, update the player data
 socket.on('playerMovement', function (movementData) {
+  console.log(players)
   players[socket.id].x = movementData.x;
   players[socket.id].y = movementData.y;
   players[socket.id].oldPosition = movementData.oldPosition;
